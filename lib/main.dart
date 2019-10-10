@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_pocket_space/telaCriandoAnotacoes.dart';
+//import 'package:flutter/src/rendering/box.dart'
 
 void main() => runApp(PaginaPrincipal());
 
@@ -36,41 +37,15 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.menu),
-                  color: Colors.purple,
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(Icons.filter_list),
-                  color: Colors.purple,
-                  onPressed: () {},
-                ),
-              ],
+            menuSuperior(), 
+            listaCategorias(),
+            SizedBox(
+              height: 20,
             ),
-            ExpansionTile(
-              backgroundColor: Colors.pink[200],
-              title: Text("Anotações realizadas aqui"),
-              children: <Widget>[
-                Row( 
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text("Vou colocar o resto do texto aqui"),
-                    IconButton(
-                      icon: Icon(Icons.launch),
-                      color: Colors.purple,
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-              ],
-            ),
+            expansedTile(),
             RaisedButton(
               padding: const EdgeInsets.all(8.0),
               textColor: Colors.purple,
@@ -81,7 +56,6 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => (TelaCriarAnotacoes())));
               },
-              
               child: Text("Criar novo"),
             ),
           ],
@@ -89,4 +63,86 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
       ),
     );
   }
+}
+
+Widget listaCategorias() {
+  return Container(
+    height: 90,
+    child: ListView(
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[
+        itemCategoria(),
+        itemCategoria(),
+        itemCategoria(),
+        itemCategoria(),
+        itemCategoria(),
+        itemCategoria(),
+        itemCategoria(),
+        itemCategoria(),
+      ],
+    ),
+  );
+}
+
+Widget itemCategoria() {
+  return Container(
+    width: 70,
+    height: 70,
+    margin: EdgeInsets.all(10),
+    padding: EdgeInsets.all(10),
+    decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(1, 1),
+            blurRadius: 5,
+            spreadRadius: 2,
+          ),
+        ],
+        borderRadius: BorderRadius.all(Radius.circular(64))),
+    //child: Image.asset()
+  );
+}
+
+Widget expansedTile() {
+  return Container(
+    child: ExpansionTile(
+      backgroundColor: Colors.pink[200],
+      title: Text("Anotações realizadas aqui"),
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text("Vou colocar o resto do texto aqui"),
+            IconButton(
+              icon: Icon(Icons.launch),
+              color: Colors.purple,
+              onPressed: () {},
+            )
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget menuSuperior() {
+  return Container(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.menu),
+          color: Colors.purple,
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.filter_list),
+          color: Colors.purple,
+          onPressed: () {},
+        ),
+      ],
+    ),
+  );
 }

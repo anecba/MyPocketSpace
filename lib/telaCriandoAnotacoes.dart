@@ -24,7 +24,7 @@ class PaginaCriarAnotacoes extends StatelessWidget {
       body: Container(
         child: Column(
           children: <Widget>[
-            Container(height: 20),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
