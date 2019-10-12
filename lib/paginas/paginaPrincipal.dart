@@ -19,14 +19,14 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
               height: 20,
             ),
             menuSuperior(),
-            listaCategorias(),
+            //listaCategorias(),
             SizedBox(
               height: 20,
             ),
             expansedTile(),
             RaisedButton(
               padding: const EdgeInsets.all(8.0),
-              textColor: Colors.purple,
+              textColor: Colors.black,
               color: Colors.pink[200],
               onPressed: () {
                 Navigator.push(
@@ -46,14 +46,13 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
 Widget menuSuperior() {
   return Container(
     child: Row(
-      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         //pesquisa(),
-        IconButton(
+         IconButton(
           icon: Icon(Icons.search),
           color: Colors.purple,
           onPressed: () {},
-        ),
+        ), 
       ],
     ),
   );
@@ -61,7 +60,6 @@ Widget menuSuperior() {
 
 Widget pesquisa() {
   return Container(
-    height: 60,
     decoration: BoxDecoration(
       color: Colors.black12.withOpacity(0.1),
       borderRadius: BorderRadius.all(

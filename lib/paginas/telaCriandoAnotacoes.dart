@@ -45,18 +45,26 @@ class PaginaCriarAnotacoes extends StatelessWidget {
               ],
             ),
             //Usuário poderá digitar aqui
-            Text(
-              "Título",
-              style: TextStyle(fontSize: 30),
+            TextFormField(
+              autofocus: true,
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.text,
+              style: TextStyle(
+                fontSize: 30,
+              ),
             ),
-            Container(
+            SizedBox(
               height: 30,
             ),
             Container(
-              height: 100,
-              child: Text(
-                  "Aqui ficarão as anotações que o usuário irá realizar...",
-                  textAlign: TextAlign.start),
+              child: TextFormField(
+                autofocus: true,
+                textAlign: TextAlign.center,
+                keyboardType: TextInputType.text,
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
             ),
             RaisedButton(
               padding: const EdgeInsets.all(8.0),
