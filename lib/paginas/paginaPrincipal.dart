@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hasura_connect/hasura_connect.dart';
+import 'package:my_pocket_space/models/note.dart';
 import 'package:my_pocket_space/paginas/telaCriandoAnotacoes.dart';
+import 'package:my_pocket_space/repositories/hasura.dart';
 
 class MinhaPaginaPrincipal extends StatefulWidget {
   @override
@@ -7,38 +10,47 @@ class MinhaPaginaPrincipal extends StatefulWidget {
 }
 
 class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
+  Snapshot<List<Note>> notes;
+  @override
+  void initState() {
+    notes = hasura.subscription(notesSubscription).map((notes) =>
+        notes['data']['note'].map<Note>((i) => Note.fromJson(i)).toList());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    notes.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(
-              height: 20,
-            ),
-            menuSuperior(),
-            //listaCategorias(),
-            SizedBox(
-              height: 20,
-            ),
-            expansedTile(),
-            RaisedButton(
-              padding: const EdgeInsets.all(8.0),
-              textColor: Colors.black,
-              color: Colors.pink[200],
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => (TelaCriarAnotacoes())));
-              },
-              child: Text("Criar novo"),
-            ),
-          ],
-        ),
+      appBar: AppBar(leading: Icon(Icons.search)),
+      body: StreamBuilder<List<Note>>(
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          return ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return expansedTile(snapshot.data[index]);
+            },
+            itemCount: snapshot.data.length,
+          );
+        },
+        stream: notes.stream,
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => (TelaCriarAnotacoes())));
+          }),
     );
   }
 }
@@ -48,11 +60,11 @@ Widget menuSuperior() {
     child: Row(
       children: <Widget>[
         //pesquisa(),
-         IconButton(
+        IconButton(
           icon: Icon(Icons.search),
           color: Colors.purple,
           onPressed: () {},
-        ), 
+        ),
       ],
     ),
   );
@@ -125,16 +137,16 @@ Widget itemCategoria() {
   );
 }
 
-Widget expansedTile() {
+Widget expansedTile(Note note) {
   return Container(
     child: ExpansionTile(
       backgroundColor: Colors.pink[200],
-      title: Text("Anotações realizadas aqui"),
+      title: Text(note.title),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text("Vou colocar o resto do texto aqui"),
+            Text(note.content),
             IconButton(
               icon: Icon(Icons.launch),
               color: Colors.purple,
@@ -146,4 +158,3 @@ Widget expansedTile() {
     ),
   );
 }
- 
