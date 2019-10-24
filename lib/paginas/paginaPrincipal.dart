@@ -59,7 +59,6 @@ Widget menuSuperior() {
   return Container(
     child: Row(
       children: <Widget>[
-        //pesquisa(),
         IconButton(
           icon: Icon(Icons.search),
           color: Colors.purple,
@@ -69,7 +68,7 @@ Widget menuSuperior() {
     ),
   );
 }
-
+/* 
 Widget pesquisa() {
   return Container(
     decoration: BoxDecoration(
@@ -135,7 +134,7 @@ Widget itemCategoria() {
         ],
         borderRadius: BorderRadius.all(Radius.circular(64))),
   );
-}
+} */
 
 Widget expansedTile(Note note) {
   return Container(

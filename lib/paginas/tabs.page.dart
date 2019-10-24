@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:my_pocket_space/paginas/login.dart';
+import 'package:my_pocket_space/paginas/paginaPrincipal.dart';
 import 'package:my_pocket_space/paginas/telaCriandoAnotacoes.dart';
-import '../main.dart';
 
-class TabPaginas extends StatelessWidget {
+class TabsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: TabBarView(
-        children: [
-          PaginaPrincipal(),
-          TelaCriarAnotacoes(),
+        children: <Widget>[
+          MinhaPaginaPrincipal(),
+          LoginPage(),
+          TelaCriarAnotacoes()
         ],
       ),
-      bottomNavigationBar: new TabBar(
+      bottomNavigationBar: TabBar(
         tabs: [
           Tab(
-            icon: new Icon(Icons.home),
+            icon: Icon(Icons.home),
           ),
           Tab(
-            icon: new Icon(Icons.shopping_cart),
+            icon: Icon(Icons.time_to_leave),
+          ),
+          Tab(
+            icon: Icon(Icons.offline_pin),
           ),
         ],
         labelColor: Theme.of(context).primaryColor,

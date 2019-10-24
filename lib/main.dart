@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_pocket_space/paginas/paginaPrincipal.dart';
-//import 'package:my_pocket_space/paginas/tabs.dart';
+import 'package:my_pocket_space/paginas/tabs.page.dart';
 
 void main() => runApp(PaginaPrincipal());
 
@@ -14,7 +13,10 @@ class PaginaPrincipal extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: MinhaPaginaPrincipal(),
+      home: DefaultTabController(
+        length: 3,
+        child: TabsPage(),
+      ),
     );  
   }
 }  

@@ -8,9 +8,7 @@ class TelaCriarAnotacoes extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'My Pocket Space',
       //o app utiliza o theme como cores da fonte. Isso influencia no expansedTile.
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
+      theme: ThemeData(primarySwatch: Colors.purple),
       home: PaginaCriarAnotacoes(),
     );
   }
@@ -20,65 +18,63 @@ class PaginaCriarAnotacoes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.assignment_return),
-                  color: Colors.pink,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => (PaginaPrincipal())));
-                  },
-                ),
-                IconButton(
-                  onPressed: () {},
-                  color: Colors.pink,
-                  icon: Icon(Icons.settings),
-                )
-              ],
-            ),
-            //Usuário poderá digitar aqui
-            TextFormField(
-              autofocus: true,
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.text,
-              style: TextStyle(
-                fontSize: 30,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.assignment_return),
+                    color: Colors.pink,
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    color: Colors.pink,
+                    icon: Icon(Icons.settings),
+                  )
+                ],
               ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              child: TextFormField(
-                autofocus: true,
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.text,
-                style: TextStyle(
-                  fontSize: 20,
+              Expanded(
+                child: TextFormField(
+                  autofocus: true,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
                 ),
               ),
-            ),
-            RaisedButton(
-              padding: const EdgeInsets.all(8.0),
-              textColor: Colors.purple,
-              color: Colors.pink[200],
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => (PaginaPrincipal())));
-              },
-              child: Text("Salvar"),
-            ),
-          ],
+              SizedBox(height: 30),
+              Container(
+                child: Expanded(
+                  child: TextFormField(
+                    autofocus: true,
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.text,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+              RaisedButton(
+                padding: const EdgeInsets.all(8.0),
+                textColor: Colors.purple,
+                color: Colors.pink[200],
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => (PaginaPrincipal())));
+                },
+                child: Text("Salvar"),
+              ),
+            ],
+          ),
         ),
       ),
     );
