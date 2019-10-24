@@ -20,7 +20,7 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
 
   @override
   void dispose() {
-    notes.close();
+    //notes.close();
     super.dispose();
   }
 

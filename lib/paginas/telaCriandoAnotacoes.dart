@@ -21,6 +21,7 @@ class PaginaCriarAnotacoes extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(height: 20),
               Row(
@@ -61,7 +62,7 @@ class PaginaCriarAnotacoes extends StatelessWidget {
                   ),
                 ),
               ),
-              RaisedButton(
+              /* RaisedButton(
                 padding: const EdgeInsets.all(8.0),
                 textColor: Colors.purple,
                 color: Colors.pink[200],
@@ -72,7 +73,7 @@ class PaginaCriarAnotacoes extends StatelessWidget {
                           builder: (context) => (PaginaPrincipal())));
                 },
                 child: Text("Salvar"),
-              ),
+              ), */
             ],
           ),
         ),
