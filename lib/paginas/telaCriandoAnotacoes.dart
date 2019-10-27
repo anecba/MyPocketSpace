@@ -18,29 +18,33 @@ class PaginaCriarAnotacoes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.assignment_return),
-                    color: Colors.pink,
-                    onPressed: () {},
+        body: Flex(
+      direction: Axis.vertical,
+      children: <Widget>[
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                SizedBox(height: 20),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.assignment_return),
+                        color: Colors.pink,
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        color: Colors.pink,
+                        icon: Icon(Icons.settings),
+                      )
+                    ],
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    color: Colors.pink,
-                    icon: Icon(Icons.settings),
-                  )
-                ],
-              ),
-              Expanded(
-                child: TextFormField(
+                ),
+                TextFormField(
                   autofocus: true,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
@@ -48,36 +52,36 @@ class PaginaCriarAnotacoes extends StatelessWidget {
                     fontSize: 30,
                   ),
                 ),
-              ),
-              SizedBox(height: 30),
-              Container(
-                child: Expanded(
-                  child: TextFormField(
-                    autofocus: true,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.text,
-                    style: TextStyle(
-                      fontSize: 20,
+                SizedBox(height: 30),
+                /* Container(
+                  child: Expanded(
+                    child: TextFormField(
+                      //autofocus: true,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
                   ),
+                ), */
+                RaisedButton(
+                  padding: const EdgeInsets.all(8.0),
+                  textColor: Colors.purple,
+                  color: Colors.pink[200],
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => (PaginaPrincipal())));
+                  },
+                  child: Text("Salvar"),
                 ),
-              ),
-              /* RaisedButton(
-                padding: const EdgeInsets.all(8.0),
-                textColor: Colors.purple,
-                color: Colors.pink[200],
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => (PaginaPrincipal())));
-                },
-                child: Text("Salvar"),
-              ), */
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      ],
+    ));
   }
 }

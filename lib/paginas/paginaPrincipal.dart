@@ -18,11 +18,11 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
     super.initState();
   }
 
-  @override
+  /* @override
   void dispose() {
-    //notes.close();
+    notes.close();
     super.dispose();
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
