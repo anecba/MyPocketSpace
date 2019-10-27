@@ -18,7 +18,7 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
     super.initState();
   }
 
-  /* @override
+  /*  @override
   void dispose() {
     notes.close();
     super.dispose();
@@ -43,14 +43,8 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
         },
         stream: notes.stream,
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => (TelaCriarAnotacoes())));
-          }),
+      floatingActionButton:
+          FloatingActionButton(child: Icon(Icons.add), onPressed: () {}),
     );
   }
 }
@@ -68,73 +62,6 @@ Widget menuSuperior() {
     ),
   );
 }
-/* 
-Widget pesquisa() {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.black12.withOpacity(0.1),
-      borderRadius: BorderRadius.all(
-        Radius.circular(128),
-      ),
-    ),
-    child: Row(
-      children: <Widget>[
-        Icon(Icons.search),
-        TextFormField(
-          autofocus: true,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            labelText: "Pesquisa...",
-            labelStyle: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget listaCategorias() {
-  return Container(
-    height: 90,
-    child: ListView(
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        itemCategoria(),
-        itemCategoria(),
-        itemCategoria(),
-        itemCategoria(),
-        itemCategoria(),
-        itemCategoria(),
-        itemCategoria(),
-        itemCategoria(),
-      ],
-    ),
-  );
-}
-
-Widget itemCategoria() {
-  return Container(
-    width: 70,
-    height: 70,
-    margin: EdgeInsets.all(10),
-    padding: EdgeInsets.all(10),
-    decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(1, 1),
-            blurRadius: 5,
-            spreadRadius: 2,
-          ),
-        ],
-        borderRadius: BorderRadius.all(Radius.circular(64))),
-  );
-} */
 
 Widget expansedTile(Note note) {
   return Container(

@@ -11,7 +11,7 @@ class TabsPage extends StatelessWidget {
         children: <Widget>[
           MinhaPaginaPrincipal(),
           LoginPage(),
-          TelaCriarAnotacoes()
+          PaginaCriarAnotacoes()
         ],
       ),
       bottomNavigationBar: TabBar(
