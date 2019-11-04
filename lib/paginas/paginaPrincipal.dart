@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:my_pocket_space/models/note.dart';
@@ -19,11 +18,10 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
     super.initState();
   }
 
-  /*  @override
+  @override
   void dispose() {
-    notes.close();
     super.dispose();
-  } */
+  }
 
   @override
   Widget build(BuildContext context) {

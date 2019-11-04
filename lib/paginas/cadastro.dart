@@ -2,20 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_pocket_space/paginas/login.dart';
 
-class CadastroApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Tela de Cadastro',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: CadastroPage(),
-    );
-  }
-}
-
 class CadastroPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

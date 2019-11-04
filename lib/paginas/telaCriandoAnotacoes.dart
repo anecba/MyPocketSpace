@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PaginaCriarAnotacoes extends StatefulWidget {
   @override
@@ -6,104 +7,95 @@ class PaginaCriarAnotacoes extends StatefulWidget {
 }
 
 class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
-  TextEditingController edt1, edt2;
-  var _set;
+  TextEditingController _titleController;
+  TextEditingController _bodyController;
 
   @override
   void initState() {
-    edt1 = TextEditingController();
-    edt2 = TextEditingController();
-
+    _titleController = TextEditingController();
+    _bodyController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    edt1.dispose();
-    edt2.dispose();
-
+    _titleController.dispose();
+    _bodyController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.restore_from_trash),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            //SizedBox(height: 20),
-            Container(
-              height: 60,
-              color: Colors.purple,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.assignment_return),
-                    color: Colors.white,
-                    onPressed: () {},
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15, left: 15),
+                child: Text(
+                  // "${DateFormat.yMd(Localizations.localeOf(context).languageCode).add_Hm().format(snapshot.data?.createdOn)}"
+                  "${DateFormat.yMMMMd(Localizations.localeOf(context).languageCode).add_Hm().format(DateTime.now())}",
+                  style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
+              child: Container(
+                color: Colors.redAccent,
+                child: TextFormField(
+                  controller: _titleController,
+                  textAlign: TextAlign.start,
+                  keyboardType: TextInputType.text,
+                  maxLines: null,
+                  decoration: InputDecoration.collapsed(hintText: ''),
+                  style: TextStyle(
+                    fontSize: 30,
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    color: Colors.white,
-                    icon: Icon(Icons.settings),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: edt1,
-                //expands: true,
-                autofocus: true,
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.text,
-                maxLines: null,
-                maxLength: 30,
-                style: TextStyle(
-                  fontSize: 30,
                 ),
               ),
             ),
-            //SizedBox(height: 30),
-            Expanded(
-              child: TextFormField(
-                controller: edt2,
-                expands: true,
-                autofocus: false,
-                textAlign: TextAlign.start,
-                keyboardType: TextInputType.text,
-                maxLines: null,
-                maxLength: 30,
-                style: TextStyle(
-                  fontSize: 30,
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 30),
+              child: Container(
+                color: Colors.redAccent,
+                child: TextFormField(
+                  controller: _bodyController,
+                  textAlign: TextAlign.start,
+                  keyboardType: TextInputType.text,
+                  maxLines: null,
+                  decoration: InputDecoration.collapsed(hintText: ''),
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
                 ),
               ),
             ),
-            /* RaisedButton(
-              padding: const EdgeInsets.all(8.0),
-              textColor: Colors.purple,
-              color: Colors.pink[200],
-              onPressed: () {},
-              child: Text("Salvar"),
-            ), */
           ],
         ),
       ),
     );
   }
 }
-/* 
-Widget checkBox (bool _set){
-  return Checkbox(
-    onChanged: (bool resp){
-      setState((){
-        _set = resp;
-      }
-      );
-    },
-    value: _set,
-  );
-} */
