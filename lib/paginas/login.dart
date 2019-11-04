@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_pocket_space/main.dart';
+import 'package:my_pocket_space/paginas/cadastro.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,9 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
-  void initState(){
+  void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
   }
@@ -39,22 +40,29 @@ class _LoginPageState extends State<LoginPage> {
                 //Primeira repartição da tela conde ta o logo
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height/2.5,
+                  height: MediaQuery.of(context).size.height / 2.5,
                   //VER SE ALGUM DIA ARRUMO ESSA GAMBIARRA!
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       GestureDetector(
-                        //onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => (HomeApp())));},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => (PaginaPrincipal())));
+                        },
                         child: Container(
                           height: 60,
                           child: Padding(
                             //CRIANDO UMA OPÇÃO PARA ACESSAR SEM FAZER LOGIN
                             padding: const EdgeInsets.all(8.0),
                             child: Row(children: <Widget>[
-                              Icon(Icons.arrow_forward, size: 15, color: Colors.white),
-                              Text('Continuar sem cadastro',
+                              Icon(Icons.arrow_forward,
+                                  size: 15, color: Colors.white),
+                              Text(
+                                'Continuar sem cadastro',
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.white,
@@ -68,7 +76,8 @@ class _LoginPageState extends State<LoginPage> {
                         alignment: Alignment.center,
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
-                          child: Icon(Icons.account_balance,
+                          child: Icon(
+                            Icons.account_balance,
                             size: 90,
                             color: Colors.white,
                           ),
@@ -82,11 +91,9 @@ class _LoginPageState extends State<LoginPage> {
                             top: 40,
                             left: 42,
                           ),
-                          child: Text('Login',
-                            style: TextStyle(
-                                color:  Colors.white,
-                                fontSize: 20
-                            ),
+                          child: Text(
+                            'Login',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
                           ),
                         ),
                       ),
@@ -95,26 +102,25 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 // Segunda repartição com Os campos para serem preenchidos
                 Container(
-                  height: MediaQuery.of(context).size.height/4,
+                  height: MediaQuery.of(context).size.height / 4,
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(top: 50),
                   child: Column(
                     children: <Widget>[
                       //container do campo Email
                       Container(
-                        width: MediaQuery.of(context).size.width/1.2,
-                        height: MediaQuery.of(context).size.width/8,
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        height: MediaQuery.of(context).size.width / 8,
                         // este padding aqui arruma o text dado um bom posicionamento.
                         padding: EdgeInsets.only(
-                            top: 1, left: 16, right: 16, bottom: 8
-                        ),
+                            top: 1, left: 16, right: 16, bottom: 8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               //colocando sombra só mais em baixo e nas laterais
-                              offset: Offset(0,5),
+                              offset: Offset(0, 5),
                               color: Colors.black12,
                               blurRadius: 5,
                             ),
@@ -132,20 +138,19 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       //container do campo password ALTEARANDO ALEATORIO
                       Container(
-                        width: MediaQuery.of(context).size.width/1.2,
-                        height: MediaQuery.of(context).size.width/8,
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        height: MediaQuery.of(context).size.width / 8,
                         margin: EdgeInsets.only(top: 16),
                         // este padding aqui arruma o text dado um bom posicionamento.
                         padding: EdgeInsets.only(
-                            top: 1, left: 16, right: 16, bottom: 4
-                        ),
+                            top: 1, left: 16, right: 16, bottom: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               //colocando sombra só mais em baixo e nas laterais
-                              offset: Offset(0,5),
+                              offset: Offset(0, 5),
                               color: Colors.black12,
                               blurRadius: 5,
                             ),
@@ -172,7 +177,8 @@ class _LoginPageState extends State<LoginPage> {
                         top: 10,
                         right: 45,
                       ),
-                      child: Text('Forgot Password ?',
+                      child: Text(
+                        'Forgot Password ?',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -185,10 +191,15 @@ class _LoginPageState extends State<LoginPage> {
                 //meu botão pra logar
                 //AQUI FICA MEU BOTAO
                 GestureDetector(
-                  //onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => (HomeApp())));},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => (PaginaPrincipal())));
+                  },
                   child: Container(
-                    height: MediaQuery.of(context).size.width/6,
-                    width: MediaQuery.of(context).size.width/1.2,
+                    height: MediaQuery.of(context).size.width / 6,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -201,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       boxShadow: [
                         BoxShadow(
                           //colocando sombra só mais em baixo e nas laterais
-                          offset: Offset(0,5),
+                          offset: Offset(0, 5),
                           color: Colors.black12,
                           blurRadius: 5,
                         ),
@@ -210,9 +221,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children : <Widget> [
+                      children: <Widget>[
                         Center(
-                          child: Text('Entrar'.toUpperCase(),
+                          child: Text(
+                            'Entrar'.toUpperCase(),
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.white,
@@ -226,7 +238,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 //criar conta
                 GestureDetector(
-                  //onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => (CadastroApp())));},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => (CadastroApp())));
+                  },
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
@@ -234,7 +251,8 @@ class _LoginPageState extends State<LoginPage> {
                         top: 10,
                         right: 45,
                       ),
-                      child: Text('Não possui uma conta? Cadastre-se Aquí!',
+                      child: Text(
+                        'Não possui uma conta? Cadastre-se Aquí!',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -243,7 +261,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ],
-
             ),
           ),
         ),

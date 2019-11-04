@@ -10,8 +10,8 @@ class TabsPage extends StatelessWidget {
       body: TabBarView(
         children: <Widget>[
           MinhaPaginaPrincipal(),
+          PaginaCriarAnotacoes(),
           LoginPage(),
-          PaginaCriarAnotacoes()
         ],
       ),
       bottomNavigationBar: TabBar(

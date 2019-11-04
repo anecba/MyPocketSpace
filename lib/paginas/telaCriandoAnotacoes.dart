@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
 
-class PaginaCriarAnotacoes extends StatelessWidget {
+class PaginaCriarAnotacoes extends StatefulWidget {
+  @override
+  _PaginaCriarAnotacoesState createState() => _PaginaCriarAnotacoesState();
+}
+
+class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
+  TextEditingController edt1, edt2;
+  var _set;
+
+  @override
+  void initState() {
+    edt1 = TextEditingController();
+    edt2 = TextEditingController();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    edt1.dispose();
+    edt2.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,19 +33,21 @@ class PaginaCriarAnotacoes extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 20),
+            //SizedBox(height: 20),
             Container(
+              height: 60,
+              color: Colors.purple,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.assignment_return),
-                    color: Colors.pink,
+                    color: Colors.white,
                     onPressed: () {},
                   ),
                   IconButton(
                     onPressed: () {},
-                    color: Colors.pink,
+                    color: Colors.white,
                     icon: Icon(Icons.settings),
                   )
                 ],
@@ -30,7 +55,8 @@ class PaginaCriarAnotacoes extends StatelessWidget {
             ),
             Expanded(
               child: TextFormField(
-                expands: true,
+                controller: edt1,
+                //expands: true,
                 autofocus: true,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.text,
@@ -41,12 +67,13 @@ class PaginaCriarAnotacoes extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            //SizedBox(height: 30),
             Expanded(
               child: TextFormField(
+                controller: edt2,
                 expands: true,
-                autofocus: true,
-                textAlign: TextAlign.center,
+                autofocus: false,
+                textAlign: TextAlign.start,
                 keyboardType: TextInputType.text,
                 maxLines: null,
                 maxLength: 30,
@@ -55,16 +82,28 @@ class PaginaCriarAnotacoes extends StatelessWidget {
                 ),
               ),
             ),
-            RaisedButton(
+            /* RaisedButton(
               padding: const EdgeInsets.all(8.0),
               textColor: Colors.purple,
               color: Colors.pink[200],
               onPressed: () {},
               child: Text("Salvar"),
-            ),
+            ), */
           ],
         ),
       ),
     );
   }
 }
+/* 
+Widget checkBox (bool _set){
+  return Checkbox(
+    onChanged: (bool resp){
+      setState((){
+        _set = resp;
+      }
+      );
+    },
+    value: _set,
+  );
+} */

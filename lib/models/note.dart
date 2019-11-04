@@ -17,7 +17,7 @@ class Note {
     title = json['note_title'];
     content = json['note_content'];
     createdAt = json['note_created_at'];
-    updatedAt = json['note_updated_at'];
+    updatedAt = json['note_daupted_at'];
   }
 
   Map<String, dynamic> toJson() {

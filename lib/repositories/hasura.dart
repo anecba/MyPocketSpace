@@ -14,3 +14,14 @@ subscription NoteSubscription {
   }
 }
 ''' ;
+//Criando o meu insert 
+final String notesInsert = '''
+mutation MyMutation {
+  __typename
+  insert_note(objects: {note_content: "", note_title: "", note_user_id: ""}) {
+    returning {
+      note_id
+    }
+  }
+}
+''';
