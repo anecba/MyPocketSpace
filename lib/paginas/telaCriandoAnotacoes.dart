@@ -64,10 +64,10 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
               child: Container(
-                color: Colors.redAccent,
+                //color: Colors.redAccent,
                 child: TextFormField(
                   controller: _titleController,
-                  textAlign: TextAlign.start,
+                  textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
                   maxLines: null,
                   decoration: InputDecoration.collapsed(hintText: ''),
@@ -80,7 +80,7 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 30),
               child: Container(
-                color: Colors.redAccent,
+                //color: Colors.redAccent,
                 child: TextFormField(
                   controller: _bodyController,
                   textAlign: TextAlign.start,
@@ -88,7 +88,7 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
                   maxLines: null,
                   decoration: InputDecoration.collapsed(hintText: ''),
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 20,
                   ),
                 ),
               ),

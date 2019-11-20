@@ -1,4 +1,4 @@
-import 'package:moor_flutter/moor_flutter.dart';
+/* import 'package:moor_flutter/moor_flutter.dart';
 import 'package:my_pocket_space/dao/dao.dart';
 
 part 'note_dao.g.dart';
@@ -9,3 +9,4 @@ class NoteDao extends DatabaseAccessor<MyDatabase> with _$NoteDaoMixin {
   // of this object.
   NoteDao(MyDatabase db) : super(db);
 }
+ */
