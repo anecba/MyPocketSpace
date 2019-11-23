@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_pocket_space/repositories/hasura.dart';
 
 class PaginaCriarAnotacoes extends StatefulWidget {
   @override
@@ -7,8 +9,10 @@ class PaginaCriarAnotacoes extends StatefulWidget {
 }
 
 class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _titleController;
   TextEditingController _bodyController;
+  int characterAmount = 0;
 
   @override
   void initState() {
@@ -24,76 +28,103 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
     super.dispose();
   }
 
+  void onEditText() {
+    setState(() {
+      characterAmount =
+          _titleController.text.length + _bodyController.text.length;
+    });
+  }
+
+  Future<void> saveData() async {
+    final isEmpty =
+        _titleController.text.isEmpty && _bodyController.text.isEmpty;
+    if (!isEmpty) {
+      final title = _titleController.text;
+      final body = _bodyController.text;
+      await save(NoteCreateDto(title, body));
+      print('$title e $body');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.restore_from_trash),
-            onPressed: () {},
+    return WillPopScope(
+      onWillPop: () async {
+        saveData();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: CupertinoNavigationBarBackButton(
+            color: Colors.orange,
           ),
-          IconButton(
-            icon: Icon(Icons.favorite),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 15, left: 15),
-                child: Text(
-                  // "${DateFormat.yMd(Localizations.localeOf(context).languageCode).add_Hm().format(snapshot.data?.createdOn)}"
-                  "${DateFormat.yMMMMd(Localizations.localeOf(context).languageCode).add_Hm().format(DateTime.now())}",
-                  style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
-              child: Container(
-                //color: Colors.redAccent,
-                child: TextFormField(
-                  controller: _titleController,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.text,
-                  maxLines: null,
-                  decoration: InputDecoration.collapsed(hintText: ''),
-                  style: TextStyle(
-                    fontSize: 30,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    "${DateFormat.yMMMMd(Localizations.localeOf(context).languageCode).add_Hm().format(DateTime.now())} | $characterAmount caracteres",
+                    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 13),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 30),
-              child: Container(
-                //color: Colors.redAccent,
-                child: TextFormField(
-                  controller: _bodyController,
-                  textAlign: TextAlign.start,
-                  keyboardType: TextInputType.text,
-                  maxLines: null,
-                  decoration: InputDecoration.collapsed(hintText: ''),
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 15, right: 15, top: 20),
+                      child: Container(
+                        child: TextFormField(
+                          autofocus: true,
+                          onChanged: (e) {
+                            onEditText();
+                          },
+                          controller: _titleController,
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.text,
+                          maxLines: null,
+                          decoration: InputDecoration.collapsed(
+                            hintText: 'Título',
+                          ),
+                          style: TextStyle(
+                            fontSize: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 15, right: 15, top: 30),
+                      child: Container(
+                        child: TextFormField(
+                          onChanged: (e) {
+                            onEditText();
+                          },
+                          controller: _bodyController,
+                          textAlign: TextAlign.start,
+                          keyboardType: TextInputType.text,
+                          maxLines: null,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Digite aqui...'),
+                          style: TextStyle(
+                            fontSize: 23,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

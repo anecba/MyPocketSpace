@@ -1,4 +1,4 @@
-/* import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor_flutter/moor_flutter.dart';
 import 'package:my_pocket_space/dao/dao.dart';
 
 part 'tag_dao.g.dart';
@@ -9,4 +9,3 @@ class TagDao extends DatabaseAccessor<MyDatabase> with _$TagDaoMixin {
   // of this object.
   TagDao(MyDatabase db) : super(db);
 }
- */

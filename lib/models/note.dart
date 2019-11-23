@@ -2,21 +2,16 @@ class Note {
   int id;
   String title;
   String content;
-  String createdAt;
+  DateTime createdAt;
   String updatedAt;
 
-  Note(
-      {this.id,
-      this.title,
-      this.content,
-      this.createdAt,
-      this.updatedAt});
+  Note({this.id, this.title, this.content, this.createdAt, this.updatedAt});
 
   Note.fromJson(Map<String, dynamic> json) {
     id = json['note_id'];
     title = json['note_title'];
     content = json['note_content'];
-    createdAt = json['note_created_at'];
+    createdAt = DateTime.parse(json['note_created_at']);
     updatedAt = json['note_daupted_at'];
   }
 

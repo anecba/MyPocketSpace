@@ -36,7 +36,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: <Widget>[
               Container(
-                //VER SE ALGUM DIA ARRUMO ESSA GAMBIARRA!
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                     Align(
                       alignment: Alignment.center,
                       child: Padding(
-                        padding: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.only(top: 50.0, bottom: 15.0),
                         child: Icon(
                           Icons.account_balance,
                           size: 90,
@@ -57,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.bottomLeft,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                          top: 40,
+                          top: 30,
                           left: 42,
                         ),
                         child: Text(
@@ -79,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       margin: EdgeInsets.only(top: 16, left: 35, right: 35),
                       // este padding aqui arruma o text dado um bom posicionamento.
                       padding: EdgeInsets.only(
-                          top: 1, left: 16, right: 16, bottom: 8),
+                          top: 1, left: 16, right: 16, bottom: 4),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         color: Colors.white,
@@ -142,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                       right: 45,
                     ),
                     child: Text(
-                      'Forgot Password ?',
+                      'Esqueceu a senha ?',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -150,10 +149,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              //minha maneira de dar um espaçamento ja q o negocio deu ruim.
               SizedBox(height: 60),
               //meu botão pra logar
-              //AQUI FICA MEU BOTAO
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,

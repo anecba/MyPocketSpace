@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hasura_connect/hasura_connect.dart';
+import 'package:my_pocket_space/Componentes/annotation_widget.dart';
 import 'package:my_pocket_space/models/note.dart';
+import 'package:my_pocket_space/paginas/edit_annotation.dart';
 import 'package:my_pocket_space/paginas/telaCriandoAnotacoes.dart';
 import 'package:my_pocket_space/repositories/hasura.dart';
 
@@ -10,6 +14,8 @@ class MinhaPaginaPrincipal extends StatefulWidget {
 }
 
 class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
+  bool select = false;
+
   Snapshot<List<Note>> notes;
   @override
   void initState() {
@@ -26,15 +32,15 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
-            },
-          ),
-        ],
+        title: Text(
+          'Anotações',
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: StreamBuilder<List<Note>>(
         builder: (context, snapshot) {
@@ -42,22 +48,50 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
             return Center(
               child: CircularProgressIndicator(),
             );
-          return ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return expansedTile(snapshot.data[index]);
-            },
+          return StaggeredGridView.countBuilder(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             itemCount: snapshot.data.length,
+            primary: false,
+            crossAxisCount: 4,
+            mainAxisSpacing: 4,
+            crossAxisSpacing: 4,
+            itemBuilder: (context, index) {
+              final item = snapshot.data[index];
+              return AnnotationWidget(
+                title: item.title,
+                content: item.content,
+                date: item.createdAt,
+                select: select,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => EditAnnotationPage(
+                                note: item,
+                              )));
+                },
+                onLongPress: () {
+                  setState(() {
+                    select = !select;
+                  });
+                },
+              );
+            },
+            staggeredTileBuilder: (index) => StaggeredTile.fit(2),
           );
         },
         stream: notes.stream,
       ),
       floatingActionButton: FloatingActionButton(
+        mini: true,
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => (PaginaCriarAnotacoes())));
+            context,
+            CupertinoPageRoute(
+              builder: (context) => (PaginaCriarAnotacoes()),
+            ),
+          );
         },
       ),
     );
@@ -72,28 +106,6 @@ Widget menuSuperior() {
           icon: Icon(Icons.search),
           color: Colors.purple,
           onPressed: () {},
-        ),
-      ],
-    ),
-  );
-}
-
-Widget expansedTile(Note note) {
-  return Container(
-    child: ExpansionTile(
-      backgroundColor: Colors.pink[200],
-      title: Text(note.title),
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Text(note.content),
-            IconButton(
-              icon: Icon(Icons.launch),
-              color: Colors.purple,
-              onPressed: () {},
-            )
-          ],
         ),
       ],
     ),
