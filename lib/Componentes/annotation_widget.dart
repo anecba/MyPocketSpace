@@ -8,11 +8,15 @@ class AnnotationWidget extends StatelessWidget {
       this.date,
       this.onTap,
       this.onLongPress,
-      this.select});
+      this.select,
+      this.addToBlackList,
+      this.marked});
   final String title;
   final String content;
   final DateTime date;
   final bool select;
+  final bool marked;
+  final Function() addToBlackList;
   final Function() onTap;
   final Function() onLongPress;
 
@@ -20,7 +24,7 @@ class AnnotationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: onLongPress,
-      onTap: onTap,
+      onTap: select ? addToBlackList : onTap,
       child: Card(
         elevation: 0.5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -38,7 +42,7 @@ class AnnotationWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '$title',
+                          '${title}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -68,21 +72,42 @@ class AnnotationWidget extends StatelessWidget {
               ),
               if (select)
                 Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: const CircleAvatar(
-                    radius: 11,
-                    backgroundColor: Colors.blue,
-                    child: Icon(
-                      Icons.check,
-                      size: 17,
-                    ),
-                  ),
-                ),
+                    bottom: 0,
+                    right: 0,
+                    child: SelectButton(
+                      marked: marked,
+                    )),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class SelectButton extends StatelessWidget {
+  final bool marked;
+  final Function onTap;
+
+  const SelectButton({Key key, this.marked, this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: marked
+          ? const CircleAvatar(
+              radius: 11,
+              backgroundColor: Colors.blue,
+              child: Icon(
+                Icons.check,
+                size: 17,
+              ),
+            )
+          : CircleAvatar(
+              radius: 11,
+              backgroundColor: Colors.grey[300],
+            ),
     );
   }
 }

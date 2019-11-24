@@ -14,6 +14,8 @@ class MinhaPaginaPrincipal extends StatefulWidget {
 }
 
 class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
+  var controller;
+  final _blackList = <Note>[];
   bool select = false;
 
   Snapshot<List<Note>> notes;
@@ -27,6 +29,16 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void addToBlackList(Note note) {
+    if (_blackList.contains(note)) {
+      _blackList.remove(note);
+    } else {
+      _blackList.add(note);
+    }
+    print(_blackList);
+    setState(() {});
   }
 
   @override
@@ -62,15 +74,46 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
                 content: item.content,
                 date: item.createdAt,
                 select: select,
+                marked: _blackList.contains(item),
+                addToBlackList: () {
+                  addToBlackList(item);
+                },
                 onTap: () {
                   Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => EditAnnotationPage(
-                                note: item,
-                              )));
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => EditAnnotationPage(
+                        note: item,
+                      ),
+                    ),
+                  );
                 },
                 onLongPress: () {
+                  if (controller == null) {
+                    controller = showBottomSheet(
+                        context: context,
+                        builder: (BuildContext bc) {
+                          return Container(
+                            child: Row(
+                              children: <Widget>[
+                                IconButton(
+                                    icon: Icon(Icons.restore_from_trash),
+                                    onPressed: () {})
+                              ],
+                            ),
+                          );
+                        });
+                  } else {
+                    controller.close();
+                  }
+
+                  controller.closed.then((e) {
+                    setState(() {
+                      select = !select;
+                      controller = null;
+                    });
+                  });
+
                   setState(() {
                     select = !select;
                   });
@@ -89,7 +132,7 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
           Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) => (PaginaCriarAnotacoes()),
+              builder: (context) => PaginaCriarAnotacoes(),
             ),
           );
         },
