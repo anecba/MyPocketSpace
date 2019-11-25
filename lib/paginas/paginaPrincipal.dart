@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:hasura_connect/hasura_connect.dart';
 import 'package:my_pocket_space/Componentes/annotation_widget.dart';
-import 'package:my_pocket_space/models/note.dart';
+import 'package:my_pocket_space/dao/dao.dart';
+import 'package:my_pocket_space/dao/note_dao.dart';
 import 'package:my_pocket_space/paginas/edit_annotation.dart';
 import 'package:my_pocket_space/paginas/telaCriandoAnotacoes.dart';
-import 'package:my_pocket_space/repositories/hasura.dart';
 
 class MinhaPaginaPrincipal extends StatefulWidget {
   @override
@@ -15,14 +14,15 @@ class MinhaPaginaPrincipal extends StatefulWidget {
 
 class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
   var controller;
-  final _blackList = <Note>[];
+  final _noteDao = NoteDao(MyDatabase.getInstance);
+  final _blackList = <NoteData>[];
   bool select = false;
+  String ordenation = 'normal';
 
-  Snapshot<List<Note>> notes;
+  Stream<List<NoteData>> notes;
   @override
   void initState() {
-    notes = hasura.subscription(notesSubscription).map((notes) =>
-        notes['data']['note'].map<Note>((i) => Note.fromJson(i)).toList());
+    notes = _noteDao.notes();
     super.initState();
   }
 
@@ -31,7 +31,7 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
     super.dispose();
   }
 
-  void addToBlackList(Note note) {
+  void addToBlackList(NoteData note) {
     if (_blackList.contains(note)) {
       _blackList.remove(note);
     } else {
@@ -39,6 +39,20 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
     }
     print(_blackList);
     setState(() {});
+  }
+
+  void orderByDate(List<NoteData> notes) {
+    notes.sort(
+        (before, current) => before.createdAt.compareTo(current.createdAt));
+  }
+
+  void orderByLetter(List<NoteData> notes) {
+    notes
+        .sort((before, current) => before.title[0].compareTo(current.title[0]));
+  }
+
+  void orderById(List<NoteData> notes) {
+    notes.sort((before, current) => before.id.compareTo(current.id));
   }
 
   @override
@@ -53,22 +67,92 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.orange),
+            onPressed: () {},
+          ),
+          PopupMenuButton(
+            tooltip: 'Ordenação de notas',
+            onSelected: (selected) {
+              print(selected);
+              setState(() {
+                ordenation = selected;
+              });
+            },
+            icon: Icon(
+              Icons.sort_by_alpha,
+              color: Colors.orange,
+            ),
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  value: 'normal',
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.close, color: Colors.orange, size: 19),
+                      SizedBox(width: 15),
+                      Text('Padrão')
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'date',
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.calendar_today,
+                          color: Colors.orange, size: 19),
+                      SizedBox(width: 15),
+                      Text('Data')
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'alfabetic',
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.sort_by_alpha, color: Colors.orange, size: 19),
+                      SizedBox(width: 15),
+                      Text('Alfabético')
+                    ],
+                  ),
+                )
+              ];
+            },
+          )
+        ],
       ),
-      body: StreamBuilder<List<Note>>(
+      body: StreamBuilder<List<NoteData>>(
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(
               child: CircularProgressIndicator(),
             );
+
+          final items = List<NoteData>.from(snapshot.data);
+
+          if (ordenation == 'date') {
+            orderByDate(items);
+          } else if (ordenation == 'alfabetic') {
+            orderByLetter(items);
+          } else {
+            orderById(items);
+          }
+          print('aaa');
+          items.forEach((e) {
+            print(e.id);
+          });
+
           return StaggeredGridView.countBuilder(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-            itemCount: snapshot.data.length,
+            padding: const EdgeInsets.only(
+                left: 10, right: 10, top: 15, bottom: 120),
+            itemCount: items.length,
             primary: false,
             crossAxisCount: 4,
             mainAxisSpacing: 4,
             crossAxisSpacing: 4,
             itemBuilder: (context, index) {
-              final item = snapshot.data[index];
+              final item = items[index];
               return AnnotationWidget(
                 title: item.title,
                 content: item.content,
@@ -90,6 +174,7 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
                 },
                 onLongPress: () {
                   if (controller == null) {
+                    addToBlackList(item);
                     controller = showBottomSheet(
                         context: context,
                         builder: (BuildContext bc) {
@@ -98,7 +183,13 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
                               children: <Widget>[
                                 IconButton(
                                     icon: Icon(Icons.restore_from_trash),
-                                    onPressed: () {})
+                                    onPressed: () async {
+                                      if (_blackList.isNotEmpty) {
+                                        await _noteDao.remove(_blackList
+                                            .map((e) => e.id)
+                                            .toList());
+                                      }
+                                    })
                               ],
                             ),
                           );
@@ -108,6 +199,7 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
                   }
 
                   controller.closed.then((e) {
+                    _blackList.clear();
                     setState(() {
                       select = !select;
                       controller = null;
@@ -123,12 +215,16 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
             staggeredTileBuilder: (index) => StaggeredTile.fit(2),
           );
         },
-        stream: notes.stream,
+        stream: notes,
       ),
       floatingActionButton: FloatingActionButton(
         mini: true,
         child: Icon(Icons.add),
         onPressed: () {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+
           Navigator.push(
             context,
             CupertinoPageRoute(
@@ -137,96 +233,6 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
           );
         },
       ),
-    );
-  }
-}
-
-Widget menuSuperior() {
-  return Container(
-    child: Row(
-      children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          color: Colors.purple,
-          onPressed: () {},
-        ),
-      ],
-    ),
-  );
-}
-
-class DataSearch extends SearchDelegate<String> {
-  final cities = [
-    "Urânia",
-    "Jales",
-    "Votuporanga",
-    "Fernandopolis",
-    "Estrela D'Oeste",
-    "Santa fé do Sul",
-    "Iturama",
-    "São José do Rio Preto",
-  ];
-
-  final recentCities = [
-    "Estrela D'Oeste",
-    "Santa fé do Sul",
-    "Iturama",
-  ];
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    // actions for appBar
-    return [
-      IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            query = "";
-          })
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    // leading icon on the left of the app bar
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-      ),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // show some result based on selection
-    return Container(
-      height: 100,
-      child: Card(
-        color: Colors.red,
-        child: Center(
-          child: Text(query),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // show when someone searches for something
-    final suggestionList = query.isEmpty
-        ? recentCities
-        : cities.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {
-          showResults(context);
-        },
-        leading: Icon(Icons.location_city),
-        title: Text(suggestionList[index]),
-      ),
-      itemCount: suggestionList.length,
     );
   }
 }

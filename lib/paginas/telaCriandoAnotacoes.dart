@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_pocket_space/dao/dao.dart';
+import 'package:my_pocket_space/dao/note_dao.dart';
 import 'package:my_pocket_space/repositories/hasura.dart';
 
 class PaginaCriarAnotacoes extends StatefulWidget {
@@ -13,6 +15,7 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
   TextEditingController _titleController;
   TextEditingController _bodyController;
   int characterAmount = 0;
+  final _noteDao = NoteDao(MyDatabase.getInstance);
 
   @override
   void initState() {
@@ -36,13 +39,11 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
   }
 
   Future<void> saveData() async {
-    final isEmpty =
-        _titleController.text.isEmpty && _bodyController.text.isEmpty;
+    final title = _titleController.text;
+    final body = _bodyController.text;
+    final isEmpty = title.isEmpty && body.isEmpty;
     if (!isEmpty) {
-      final title = _titleController.text;
-      final body = _bodyController.text;
-      await save(NoteCreateDto(title, body));
-      print('$title e $body');
+      _noteDao.insert(NoteCreateDto(title, body));
     }
   }
 

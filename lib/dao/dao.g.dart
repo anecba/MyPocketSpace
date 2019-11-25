@@ -8,24 +8,25 @@ part of 'dao.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class NoteData extends DataClass implements Insertable<NoteData> {
-  final String uid;
+  final int id;
   final String title;
   final String content;
   final DateTime createdAt;
   final DateTime updatedAt;
   NoteData(
-      {@required this.uid,
+      {@required this.id,
       @required this.title,
       @required this.content,
       @required this.createdAt,
-      @required this.updatedAt});
+      this.updatedAt});
   factory NoteData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return NoteData(
-      uid: stringType.mapFromDatabaseResponse(data['${effectivePrefix}uid']),
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
       content:
@@ -39,7 +40,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   factory NoteData.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return NoteData(
-      uid: serializer.fromJson<String>(json['uid']),
+      id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       content: serializer.fromJson<String>(json['content']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -50,7 +51,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   Map<String, dynamic> toJson(
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return {
-      'uid': serializer.toJson<String>(uid),
+      'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
       'content': serializer.toJson<String>(content),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -61,7 +62,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   @override
   NoteCompanion createCompanion(bool nullToAbsent) {
     return NoteCompanion(
-      uid: uid == null && nullToAbsent ? const Value.absent() : Value(uid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       title:
           title == null && nullToAbsent ? const Value.absent() : Value(title),
       content: content == null && nullToAbsent
@@ -77,13 +78,13 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   }
 
   NoteData copyWith(
-          {String uid,
+          {int id,
           String title,
           String content,
           DateTime createdAt,
           DateTime updatedAt}) =>
       NoteData(
-        uid: uid ?? this.uid,
+        id: id ?? this.id,
         title: title ?? this.title,
         content: content ?? this.content,
         createdAt: createdAt ?? this.createdAt,
@@ -92,7 +93,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   @override
   String toString() {
     return (StringBuffer('NoteData(')
-          ..write('uid: $uid, ')
+          ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('content: $content, ')
           ..write('createdAt: $createdAt, ')
@@ -103,7 +104,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
 
   @override
   int get hashCode => $mrjf($mrjc(
-      uid.hashCode,
+      id.hashCode,
       $mrjc(
           title.hashCode,
           $mrjc(content.hashCode,
@@ -112,7 +113,7 @@ class NoteData extends DataClass implements Insertable<NoteData> {
   bool operator ==(other) =>
       identical(this, other) ||
       (other is NoteData &&
-          other.uid == this.uid &&
+          other.id == this.id &&
           other.title == this.title &&
           other.content == this.content &&
           other.createdAt == this.createdAt &&
@@ -120,37 +121,34 @@ class NoteData extends DataClass implements Insertable<NoteData> {
 }
 
 class NoteCompanion extends UpdateCompanion<NoteData> {
-  final Value<String> uid;
+  final Value<int> id;
   final Value<String> title;
   final Value<String> content;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const NoteCompanion({
-    this.uid = const Value.absent(),
+    this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.content = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
   NoteCompanion.insert({
-    @required String uid,
+    this.id = const Value.absent(),
     @required String title,
     @required String content,
-    @required DateTime createdAt,
-    @required DateTime updatedAt,
-  })  : uid = Value(uid),
-        title = Value(title),
-        content = Value(content),
-        createdAt = Value(createdAt),
-        updatedAt = Value(updatedAt);
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  })  : title = Value(title),
+        content = Value(content);
   NoteCompanion copyWith(
-      {Value<String> uid,
+      {Value<int> id,
       Value<String> title,
       Value<String> content,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt}) {
     return NoteCompanion(
-      uid: uid ?? this.uid,
+      id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,
       createdAt: createdAt ?? this.createdAt,
@@ -163,13 +161,13 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   final GeneratedDatabase _db;
   final String _alias;
   $NoteTable(this._db, [this._alias]);
-  final VerificationMeta _uidMeta = const VerificationMeta('uid');
-  GeneratedTextColumn _uid;
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
   @override
-  GeneratedTextColumn get uid => _uid ??= _constructUid();
-  GeneratedTextColumn _constructUid() {
-    return GeneratedTextColumn('uid', $tableName, false,
-        minTextLength: 1, maxTextLength: 46);
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
   final VerificationMeta _titleMeta = const VerificationMeta('title');
@@ -177,8 +175,7 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   @override
   GeneratedTextColumn get title => _title ??= _constructTitle();
   GeneratedTextColumn _constructTitle() {
-    return GeneratedTextColumn('title', $tableName, false,
-        minTextLength: 6, maxTextLength: 32);
+    return GeneratedTextColumn('title', $tableName, false, minTextLength: 1);
   }
 
   final VerificationMeta _contentMeta = const VerificationMeta('content');
@@ -186,11 +183,7 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   @override
   GeneratedTextColumn get content => _content ??= _constructContent();
   GeneratedTextColumn _constructContent() {
-    return GeneratedTextColumn(
-      'content',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('content', $tableName, false, minTextLength: 1);
   }
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
@@ -198,11 +191,8 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   @override
   GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
   GeneratedDateTimeColumn _constructCreatedAt() {
-    return GeneratedDateTimeColumn(
-      'created_at',
-      $tableName,
-      false,
-    );
+    return GeneratedDateTimeColumn('created_at', $tableName, false,
+        defaultValue: Constant(DateTime.now()));
   }
 
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
@@ -213,13 +203,13 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
     return GeneratedDateTimeColumn(
       'updated_at',
       $tableName,
-      false,
+      true,
     );
   }
 
   @override
   List<GeneratedColumn> get $columns =>
-      [uid, title, content, createdAt, updatedAt];
+      [id, title, content, createdAt, updatedAt];
   @override
   $NoteTable get asDslTable => this;
   @override
@@ -230,10 +220,10 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   VerificationContext validateIntegrity(NoteCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.uid.present) {
-      context.handle(_uidMeta, uid.isAcceptableValue(d.uid.value, _uidMeta));
-    } else if (uid.isRequired && isInserting) {
-      context.missing(_uidMeta);
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
     }
     if (d.title.present) {
       context.handle(
@@ -263,7 +253,7 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   NoteData map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -273,8 +263,8 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
   @override
   Map<String, Variable> entityToSql(NoteCompanion d) {
     final map = <String, Variable>{};
-    if (d.uid.present) {
-      map['uid'] = Variable<String, StringType>(d.uid.value);
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
     }
     if (d.title.present) {
       map['title'] = Variable<String, StringType>(d.title.value);
@@ -298,39 +288,43 @@ class $NoteTable extends Note with TableInfo<$NoteTable, NoteData> {
 }
 
 class NoteTagData extends DataClass implements Insertable<NoteTagData> {
-  final String noteId;
-  final String tagId;
-  NoteTagData({@required this.noteId, @required this.tagId});
+  final int id;
+  final int noteId;
+  final int tagId;
+  NoteTagData({@required this.id, @required this.noteId, @required this.tagId});
   factory NoteTagData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
+    final intType = db.typeSystem.forDartType<int>();
     return NoteTagData(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       noteId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}note_id']),
-      tagId:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}tag_id']),
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}note_id']),
+      tagId: intType.mapFromDatabaseResponse(data['${effectivePrefix}tag_id']),
     );
   }
   factory NoteTagData.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return NoteTagData(
-      noteId: serializer.fromJson<String>(json['noteId']),
-      tagId: serializer.fromJson<String>(json['tagId']),
+      id: serializer.fromJson<int>(json['id']),
+      noteId: serializer.fromJson<int>(json['noteId']),
+      tagId: serializer.fromJson<int>(json['tagId']),
     );
   }
   @override
   Map<String, dynamic> toJson(
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return {
-      'noteId': serializer.toJson<String>(noteId),
-      'tagId': serializer.toJson<String>(tagId),
+      'id': serializer.toJson<int>(id),
+      'noteId': serializer.toJson<int>(noteId),
+      'tagId': serializer.toJson<int>(tagId),
     };
   }
 
   @override
   NoteTagCompanion createCompanion(bool nullToAbsent) {
     return NoteTagCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       noteId:
           noteId == null && nullToAbsent ? const Value.absent() : Value(noteId),
       tagId:
@@ -338,13 +332,15 @@ class NoteTagData extends DataClass implements Insertable<NoteTagData> {
     );
   }
 
-  NoteTagData copyWith({String noteId, String tagId}) => NoteTagData(
+  NoteTagData copyWith({int id, int noteId, int tagId}) => NoteTagData(
+        id: id ?? this.id,
         noteId: noteId ?? this.noteId,
         tagId: tagId ?? this.tagId,
       );
   @override
   String toString() {
     return (StringBuffer('NoteTagData(')
+          ..write('id: $id, ')
           ..write('noteId: $noteId, ')
           ..write('tagId: $tagId')
           ..write(')'))
@@ -352,29 +348,36 @@ class NoteTagData extends DataClass implements Insertable<NoteTagData> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(noteId.hashCode, tagId.hashCode));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(noteId.hashCode, tagId.hashCode)));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
       (other is NoteTagData &&
+          other.id == this.id &&
           other.noteId == this.noteId &&
           other.tagId == this.tagId);
 }
 
 class NoteTagCompanion extends UpdateCompanion<NoteTagData> {
-  final Value<String> noteId;
-  final Value<String> tagId;
+  final Value<int> id;
+  final Value<int> noteId;
+  final Value<int> tagId;
   const NoteTagCompanion({
+    this.id = const Value.absent(),
     this.noteId = const Value.absent(),
     this.tagId = const Value.absent(),
   });
   NoteTagCompanion.insert({
-    @required String noteId,
-    @required String tagId,
+    this.id = const Value.absent(),
+    @required int noteId,
+    @required int tagId,
   })  : noteId = Value(noteId),
         tagId = Value(tagId);
-  NoteTagCompanion copyWith({Value<String> noteId, Value<String> tagId}) {
+  NoteTagCompanion copyWith(
+      {Value<int> id, Value<int> noteId, Value<int> tagId}) {
     return NoteTagCompanion(
+      id: id ?? this.id,
       noteId: noteId ?? this.noteId,
       tagId: tagId ?? this.tagId,
     );
@@ -385,12 +388,21 @@ class $NoteTagTable extends NoteTag with TableInfo<$NoteTagTable, NoteTagData> {
   final GeneratedDatabase _db;
   final String _alias;
   $NoteTagTable(this._db, [this._alias]);
-  final VerificationMeta _noteIdMeta = const VerificationMeta('noteId');
-  GeneratedTextColumn _noteId;
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
   @override
-  GeneratedTextColumn get noteId => _noteId ??= _constructNoteId();
-  GeneratedTextColumn _constructNoteId() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _noteIdMeta = const VerificationMeta('noteId');
+  GeneratedIntColumn _noteId;
+  @override
+  GeneratedIntColumn get noteId => _noteId ??= _constructNoteId();
+  GeneratedIntColumn _constructNoteId() {
+    return GeneratedIntColumn(
       'note_id',
       $tableName,
       false,
@@ -398,11 +410,11 @@ class $NoteTagTable extends NoteTag with TableInfo<$NoteTagTable, NoteTagData> {
   }
 
   final VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
-  GeneratedTextColumn _tagId;
+  GeneratedIntColumn _tagId;
   @override
-  GeneratedTextColumn get tagId => _tagId ??= _constructTagId();
-  GeneratedTextColumn _constructTagId() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get tagId => _tagId ??= _constructTagId();
+  GeneratedIntColumn _constructTagId() {
+    return GeneratedIntColumn(
       'tag_id',
       $tableName,
       false,
@@ -410,7 +422,7 @@ class $NoteTagTable extends NoteTag with TableInfo<$NoteTagTable, NoteTagData> {
   }
 
   @override
-  List<GeneratedColumn> get $columns => [noteId, tagId];
+  List<GeneratedColumn> get $columns => [id, noteId, tagId];
   @override
   $NoteTagTable get asDslTable => this;
   @override
@@ -421,6 +433,11 @@ class $NoteTagTable extends NoteTag with TableInfo<$NoteTagTable, NoteTagData> {
   VerificationContext validateIntegrity(NoteTagCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
+    }
     if (d.noteId.present) {
       context.handle(
           _noteIdMeta, noteId.isAcceptableValue(d.noteId.value, _noteIdMeta));
@@ -437,7 +454,7 @@ class $NoteTagTable extends NoteTag with TableInfo<$NoteTagTable, NoteTagData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   NoteTagData map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -447,11 +464,14 @@ class $NoteTagTable extends NoteTag with TableInfo<$NoteTagTable, NoteTagData> {
   @override
   Map<String, Variable> entityToSql(NoteTagCompanion d) {
     final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
     if (d.noteId.present) {
-      map['note_id'] = Variable<String, StringType>(d.noteId.value);
+      map['note_id'] = Variable<int, IntType>(d.noteId.value);
     }
     if (d.tagId.present) {
-      map['tag_id'] = Variable<String, StringType>(d.tagId.value);
+      map['tag_id'] = Variable<int, IntType>(d.tagId.value);
     }
     return map;
   }
@@ -463,22 +483,23 @@ class $NoteTagTable extends NoteTag with TableInfo<$NoteTagTable, NoteTagData> {
 }
 
 class TagData extends DataClass implements Insertable<TagData> {
-  final String uid;
+  final int id;
   final String name;
-  TagData({@required this.uid, @required this.name});
+  TagData({@required this.id, @required this.name});
   factory TagData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     return TagData(
-      uid: stringType.mapFromDatabaseResponse(data['${effectivePrefix}uid']),
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
     );
   }
   factory TagData.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return TagData(
-      uid: serializer.fromJson<String>(json['uid']),
+      id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
     );
   }
@@ -486,7 +507,7 @@ class TagData extends DataClass implements Insertable<TagData> {
   Map<String, dynamic> toJson(
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
     return {
-      'uid': serializer.toJson<String>(uid),
+      'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
     };
   }
@@ -494,47 +515,46 @@ class TagData extends DataClass implements Insertable<TagData> {
   @override
   TagCompanion createCompanion(bool nullToAbsent) {
     return TagCompanion(
-      uid: uid == null && nullToAbsent ? const Value.absent() : Value(uid),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
     );
   }
 
-  TagData copyWith({String uid, String name}) => TagData(
-        uid: uid ?? this.uid,
+  TagData copyWith({int id, String name}) => TagData(
+        id: id ?? this.id,
         name: name ?? this.name,
       );
   @override
   String toString() {
     return (StringBuffer('TagData(')
-          ..write('uid: $uid, ')
+          ..write('id: $id, ')
           ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(uid.hashCode, name.hashCode));
+  int get hashCode => $mrjf($mrjc(id.hashCode, name.hashCode));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
-      (other is TagData && other.uid == this.uid && other.name == this.name);
+      (other is TagData && other.id == this.id && other.name == this.name);
 }
 
 class TagCompanion extends UpdateCompanion<TagData> {
-  final Value<String> uid;
+  final Value<int> id;
   final Value<String> name;
   const TagCompanion({
-    this.uid = const Value.absent(),
+    this.id = const Value.absent(),
     this.name = const Value.absent(),
   });
   TagCompanion.insert({
-    @required String uid,
+    this.id = const Value.absent(),
     @required String name,
-  })  : uid = Value(uid),
-        name = Value(name);
-  TagCompanion copyWith({Value<String> uid, Value<String> name}) {
+  }) : name = Value(name);
+  TagCompanion copyWith({Value<int> id, Value<String> name}) {
     return TagCompanion(
-      uid: uid ?? this.uid,
+      id: id ?? this.id,
       name: name ?? this.name,
     );
   }
@@ -544,13 +564,13 @@ class $TagTable extends Tag with TableInfo<$TagTable, TagData> {
   final GeneratedDatabase _db;
   final String _alias;
   $TagTable(this._db, [this._alias]);
-  final VerificationMeta _uidMeta = const VerificationMeta('uid');
-  GeneratedTextColumn _uid;
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
   @override
-  GeneratedTextColumn get uid => _uid ??= _constructUid();
-  GeneratedTextColumn _constructUid() {
-    return GeneratedTextColumn('uid', $tableName, false,
-        minTextLength: 6, maxTextLength: 32);
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
   final VerificationMeta _nameMeta = const VerificationMeta('name');
@@ -563,7 +583,7 @@ class $TagTable extends Tag with TableInfo<$TagTable, TagData> {
   }
 
   @override
-  List<GeneratedColumn> get $columns => [uid, name];
+  List<GeneratedColumn> get $columns => [id, name];
   @override
   $TagTable get asDslTable => this;
   @override
@@ -574,10 +594,10 @@ class $TagTable extends Tag with TableInfo<$TagTable, TagData> {
   VerificationContext validateIntegrity(TagCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.uid.present) {
-      context.handle(_uidMeta, uid.isAcceptableValue(d.uid.value, _uidMeta));
-    } else if (uid.isRequired && isInserting) {
-      context.missing(_uidMeta);
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    } else if (id.isRequired && isInserting) {
+      context.missing(_idMeta);
     }
     if (d.name.present) {
       context.handle(
@@ -589,7 +609,7 @@ class $TagTable extends Tag with TableInfo<$TagTable, TagData> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   TagData map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
@@ -599,8 +619,8 @@ class $TagTable extends Tag with TableInfo<$TagTable, TagData> {
   @override
   Map<String, Variable> entityToSql(TagCompanion d) {
     final map = <String, Variable>{};
-    if (d.uid.present) {
-      map['uid'] = Variable<String, StringType>(d.uid.value);
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
     }
     if (d.name.present) {
       map['name'] = Variable<String, StringType>(d.name.value);
@@ -622,6 +642,12 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   $NoteTagTable get noteTag => _noteTag ??= $NoteTagTable(this);
   $TagTable _tag;
   $TagTable get tag => _tag ??= $TagTable(this);
+  NoteDao _noteDao;
+  NoteDao get noteDao => _noteDao ??= NoteDao(this as MyDatabase);
+  TagDao _tagDao;
+  TagDao get tagDao => _tagDao ??= TagDao(this as MyDatabase);
+  NoteTagDao _noteTagDao;
+  NoteTagDao get noteTagDao => _noteTagDao ??= NoteTagDao(this as MyDatabase);
   @override
   List<TableInfo> get allTables => [note, noteTag, tag];
 }

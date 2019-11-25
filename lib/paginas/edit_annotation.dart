@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_pocket_space/models/note.dart';
+import 'package:my_pocket_space/dao/dao.dart';
+import 'package:my_pocket_space/dao/note_dao.dart';
 import 'package:my_pocket_space/repositories/hasura.dart';
+import 'package:share/share.dart';
 
 class EditAnnotationPage extends StatefulWidget {
-  final Note note;
+  final NoteData note;
 
   const EditAnnotationPage({Key key, this.note}) : super(key: key);
 
@@ -16,6 +18,7 @@ class EditAnnotationPage extends StatefulWidget {
 class _EditAnnotationPageState extends State<EditAnnotationPage> {
   TextEditingController _titleController;
   TextEditingController _bodyController;
+  final _noteDao = NoteDao(MyDatabase.getInstance);
 
   @override
   void initState() {
@@ -32,15 +35,27 @@ class _EditAnnotationPageState extends State<EditAnnotationPage> {
     super.dispose();
   }
 
-  Future<void> saveData() async {
+  /* Future<void> saveData() async {
     final title = _titleController.text;
     final body = _bodyController.text;
 
     final notHasUpdate =
         widget.note.title == title || widget.note.content == body;
     if (!notHasUpdate) {
-      await update(NoteUpdateDto(title, body, widget.note.id));
-      print('$title e $body');
+      _noteDao
+          .change(NoteUpdateDto(title, body, widget.note.id, DateTime.now()));
+    }
+  } */
+
+  Future<void> saveData() async {
+    final title = _titleController.text;
+    final body = _bodyController.text;
+
+    final notHasUpdate =
+        widget.note.title == title && widget.note.content == body;
+    if (!notHasUpdate) {
+      _noteDao
+          .change(NoteUpdateDto(title, body, widget.note.id, DateTime.now()));
     }
   }
 
@@ -62,7 +77,12 @@ class _EditAnnotationPageState extends State<EditAnnotationPage> {
           ),
           actions: <Widget>[
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                Share.share(
+                    '''${widget.note.title} - ${DateFormat.yMMMMd(Localizations.localeOf(context).languageCode).add_Hm().format(widget.note.createdAt)}
+${widget.note.content}
+                ''');
+              },
               icon: Icon(
                 Icons.share,
                 color: Colors.orange,

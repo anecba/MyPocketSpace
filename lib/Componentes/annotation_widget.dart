@@ -58,7 +58,8 @@ class AnnotationWidget extends StatelessWidget {
                                 color: Colors.grey[600], fontSize: 15),
                           ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10),
+                          padding:
+                              EdgeInsets.only(top: 10, right: select ? 30 : 0),
                           child: Text(
                             "${DateFormat.yMd(Localizations.localeOf(context).languageCode).add_Hm().format(date)}",
                             style: const TextStyle(
