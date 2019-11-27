@@ -47,7 +47,7 @@ class _EditAnnotationPageState extends State<EditAnnotationPage> {
     }
   } */
 
-  Future<void> saveData() async {
+  Future<void> saveDataEdit() async {
     final title = _titleController.text;
     final body = _bodyController.text;
 
@@ -63,7 +63,7 @@ class _EditAnnotationPageState extends State<EditAnnotationPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        saveData();
+        saveDataEdit();
 
         return true;
       },
@@ -161,6 +161,4 @@ ${widget.note.content}
       ),
     );
   }
-
-  Future controller(_titleController, _bodyController) {}
 }

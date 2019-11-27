@@ -38,7 +38,7 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
     });
   }
 
-  Future<void> saveData() async {
+  Future<void> saveDataAdd() async {
     final title = _titleController.text;
     final body = _bodyController.text;
     final isEmpty = title.isEmpty && body.isEmpty;
@@ -51,7 +51,7 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        saveData();
+        saveDataAdd();
         return true;
       },
       child: Scaffold(
