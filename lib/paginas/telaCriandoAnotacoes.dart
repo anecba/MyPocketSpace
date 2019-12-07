@@ -58,6 +58,10 @@ class _PaginaCriarAnotacoesState extends State<PaginaCriarAnotacoes> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          title: Text(
+            "Salvo automaticamente",
+            style: TextStyle(color: Colors.orange),
+          ),
           leading: CupertinoNavigationBarBackButton(
             color: Colors.orange,
           ),

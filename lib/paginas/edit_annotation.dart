@@ -75,12 +75,16 @@ class _EditAnnotationPageState extends State<EditAnnotationPage> {
           leading: CupertinoNavigationBarBackButton(
             color: Colors.orange,
           ),
+          title: Text(
+            "Salvo automaticamente",
+            style: TextStyle(color: Colors.orange),
+          ),
           actions: <Widget>[
             IconButton(
               onPressed: () async {
                 Share.share(
                     '''${widget.note.title} - ${DateFormat.yMMMMd(Localizations.localeOf(context).languageCode).add_Hm().format(widget.note.createdAt)}
-${widget.note.content}
+                        ${widget.note.content}
                 ''');
               },
               icon: Icon(
@@ -88,7 +92,8 @@ ${widget.note.content}
                 color: Colors.orange,
               ),
             ),
-            PopupMenuButton(
+
+            /* PopupMenuButton(
               icon: Icon(
                 Icons.more_vert,
                 color: Colors.orange,
@@ -106,7 +111,7 @@ ${widget.note.content}
                         ))
                     .toList();
               },
-            )
+            ) */
           ],
         ),
         body: SingleChildScrollView(

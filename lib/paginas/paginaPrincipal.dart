@@ -68,10 +68,10 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
-          IconButton(
+          /* IconButton(
             icon: Icon(Icons.search, color: Colors.orange),
             onPressed: () {},
-          ),
+          ), */
           PopupMenuButton(
             tooltip: 'Ordenação de notas',
             onSelected: (selected) {
@@ -184,11 +184,12 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
                                 IconButton(
                                     icon: Icon(Icons.restore_from_trash),
                                     onPressed: () async {
-                                      if (_blackList.isNotEmpty) {
+                                      alertDialogDelete();
+                                      /* if (_blackList.isNotEmpty) {
                                         await _noteDao.remove(_blackList
                                             .map((e) => e.id)
                                             .toList());
-                                      }
+                                      } */
                                     })
                               ],
                             ),
@@ -233,6 +234,36 @@ class _MinhaPaginaPrincipalState extends State<MinhaPaginaPrincipal> {
           );
         },
       ),
+    );
+  }
+
+  void alertDialogDelete() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Deseja apagar as anotações selecionadas?"),
+          actions: <Widget>[
+            FlatButton(
+                child: Text("Sim"),
+                onPressed: () async {
+                  //parei daqui
+                  if (_blackList.isNotEmpty) {
+                    await _noteDao.remove(_blackList.map((e) => e.id).toList());
+                    Navigator.of(context).pop();
+                  } else {
+                    await Navigator.of(context).pop();
+                  }
+                }),
+            FlatButton(
+              child: Text("Não"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
