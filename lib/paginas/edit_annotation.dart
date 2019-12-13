@@ -76,7 +76,7 @@ class _EditAnnotationPageState extends State<EditAnnotationPage> {
             color: Colors.orange,
           ),
           title: Text(
-            "Salvo automaticamente",
+            "Salvo automaticamente", 
             style: TextStyle(color: Colors.orange),
           ),
           actions: <Widget>[

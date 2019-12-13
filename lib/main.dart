@@ -11,6 +11,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'My Pocket Space',
       home: MinhaPaginaPrincipal(),
+      theme: ThemeData(
+        primaryColor: Colors.orange,
+      ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
